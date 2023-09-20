@@ -1,0 +1,29 @@
+server:
+  port: 8099
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+spring:
+  cloud:
+    gateway:
+      default-filters:
+      - name: GlobalFilter
+      routes:
+      - id: service-customer
+        uri: lb://service-customer
+        predicates:
+          - Path=/customer/**
+        filters:
+        - PreFilter
+        - PostFilter
+      - id: service-accountcustomer
+        uri: lb://service-accountcustomer
+        predicates:
+          - Path=/accountcustomer/**,/creditcardaccount/**
+        filters:
+        - PreFilter
+        - PostFilter
+  application:
+    name: service-apigateway 
+          
